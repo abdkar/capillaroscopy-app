@@ -6,7 +6,7 @@
 
 This application provides real-time segmentation simulation, multi-layer visualization, and explainable AI overlays to assist clinicians in evaluating microvascular abnormalities.
 
-## 🌟 Key Features
+##  Key Features
 
 - **Premium Healthcare UI/UX**: Completely redesigned with a highly legible `Inter` typography scale, custom medical color palettes (`cyan-600` primary, `emerald-500` positive), and soft `backdrop-blur` glassmorphism card layouts.
 - **Dynamic Accessibility Scaling**: Built-in, root-level font size controls (A-, A, A+) allowing users to instantly scale all text and UI elements proportionally without breaking layout constraints.
@@ -16,7 +16,7 @@ This application provides real-time segmentation simulation, multi-layer visuali
 - **Explainable AI (XAI) Panel**: Generates deterministic, consistent pseudo-predictions detailing primary abnormality drivers (e.g., giant capillaries, reduced density) and secondary findings, broken down by spatial zones (A–D).
 - **Custom Image Integration**: Supports loading specific clinical images directly for review within the simulated AI pipeline.
 
-## 🚀 Quick Start
+##  Quick Start
 
 Ensure you have Node.js installed, then run the following commands to start the application:
 
