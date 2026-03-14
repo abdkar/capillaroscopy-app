@@ -1,5 +1,5 @@
 import React from 'react';
-import { AnalysisResult, LesionGrade } from './types';
+import { AnalysisResult, LesionGrade, SclerodermaPattern } from './types';
 import {
   BarChart,
   Bar,
@@ -55,6 +55,10 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
     if (zone.giantCount > 0)
       drivers.push(`Giant capillaries (${zone.giantCount})`);
     if (zone.meanLoopWidth > 50) drivers.push('Enlarged loop width');
+    if (zone.ramifiedCount > 0)
+      drivers.push(`Ramified/branched capillaries (${zone.ramifiedCount})`);
+    if (zone.dilatedCount > 0)
+      drivers.push(`Dilated capillaries (${zone.dilatedCount})`);
     if (drivers.length === 0)
       drivers.push('Normal density', 'No crossed capillaries');
 
@@ -69,7 +73,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
 
   const MetricItem: React.FC<{
     label: string;
-    value: string | number;
+    value: string | number | boolean;
     unit?: string;
     alert?: boolean;
   }> = ({ label, value, unit, alert: isAlert }) => (
@@ -82,7 +86,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
           isAlert ? 'text-red-600' : 'text-slate-800'
         }`}
       >
-        {value}
+        {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
         {unit && (
           <span className="text-xs font-normal text-slate-400 ml-0.5">{unit}</span>
         )}
@@ -161,6 +165,20 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
             </BarChart>
           </ResponsiveContainer>
         </div>
+
+        {/* Scleroderma Pattern */}
+        {result.sclerodermaPattern !== SclerodermaPattern.None && (
+          <div className="mt-3 pt-3 border-t border-slate-100">
+            <p className="text-sm text-slate-400 uppercase tracking-wider font-medium mb-1">Scleroderma Pattern</p>
+            <span className={`text-sm font-bold px-2.5 py-1 rounded-md ${
+              result.sclerodermaPattern === SclerodermaPattern.Late ? 'bg-red-100 text-red-700' :
+              result.sclerodermaPattern === SclerodermaPattern.Active ? 'bg-amber-100 text-amber-700' :
+              'bg-emerald-100 text-emerald-700'
+            }`}>
+              {result.sclerodermaPattern}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Explanation */}
@@ -221,64 +239,62 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
         <div className="grid grid-cols-2 gap-4">
           <MetricItem
             label="Capillaries"
-            value={
-              selectedZoneId
-                ? (selectedZone?.capillaryCount ?? '—')
-                : result.metrics.totalCapillaryCount
-            }
+            value={selectedZoneId ? (selectedZone?.capillaryCount ?? '—') : result.metrics.totalCapillaryCount}
           />
           <MetricItem
             label="Length"
-            value={
-              selectedZoneId
-                ? (selectedZone?.zoneLengthMm ?? '—')
-                : result.metrics.analyzedLengthMm
-            }
+            value={selectedZoneId ? (selectedZone?.zoneLengthMm ?? '—') : result.metrics.analyzedLengthMm}
             unit="mm"
           />
           <MetricItem
             label="Density"
-            value={
-              selectedZoneId
-                ? (selectedZone?.localDensity ?? '—')
-                : result.metrics.density
-            }
+            value={selectedZoneId ? (selectedZone?.localDensity ?? '—') : result.metrics.density}
             unit="/mm"
           />
           <MetricItem
             label="Loop Width"
-            value={
-              selectedZoneId
-                ? (selectedZone?.meanLoopWidth ?? '—')
-                : result.metrics.meanLoopWidth
-            }
+            value={selectedZoneId ? (selectedZone?.meanLoopWidth ?? '—') : result.metrics.meanLoopWidth}
             unit="µm"
           />
           <MetricItem
             label="Hemorrhages"
-            value={
-              selectedZoneId
-                ? (selectedZone?.hemorrhageCount ?? 0)
-                : result.metrics.hemorrhageCount
-            }
-            alert={
-              (selectedZoneId
-                ? (selectedZone?.hemorrhageCount ?? 0)
-                : result.metrics.hemorrhageCount) > 0
-            }
+            value={selectedZoneId ? (selectedZone?.hemorrhageCount ?? 0) : result.metrics.hemorrhageCount}
+            alert={(selectedZoneId ? (selectedZone?.hemorrhageCount ?? 0) : result.metrics.hemorrhageCount) > 0}
           />
           <MetricItem
             label="Crossed Caps"
-            value={
-              selectedZoneId
-                ? (selectedZone?.crossedCount ?? 0)
-                : result.metrics.crossedCapillaries
-            }
-            alert={
-              (selectedZoneId
-                ? (selectedZone?.crossedCount ?? 0)
-                : result.metrics.crossedCapillaries) > 0
-            }
+            value={selectedZoneId ? (selectedZone?.crossedCount ?? 0) : result.metrics.crossedCapillaries}
+            alert={(selectedZoneId ? (selectedZone?.crossedCount ?? 0) : result.metrics.crossedCapillaries) > 0}
+          />
+          <MetricItem
+            label="Giant Caps"
+            value={selectedZoneId ? (selectedZone?.giantCount ?? 0) : result.metrics.giantCapillaries}
+            alert={(selectedZoneId ? (selectedZone?.giantCount ?? 0) : result.metrics.giantCapillaries) > 0}
+          />
+          <MetricItem
+            label="Ramified"
+            value={selectedZoneId ? (selectedZone?.ramifiedCount ?? 0) : result.metrics.ramifiedCapillaries}
+            alert={(selectedZoneId ? (selectedZone?.ramifiedCount ?? 0) : result.metrics.ramifiedCapillaries) > 0}
+          />
+          <MetricItem
+            label="Dilated"
+            value={selectedZoneId ? (selectedZone?.dilatedCount ?? 0) : result.metrics.dilatedCapillaries}
+            alert={(selectedZoneId ? (selectedZone?.dilatedCount ?? 0) : result.metrics.dilatedCapillaries) > 0}
+          />
+          <MetricItem
+            label="Tortuosity"
+            value={result.metrics.tortuosityIndex}
+            alert={result.metrics.tortuosityIndex > 5}
+          />
+          <MetricItem
+            label="Avascular"
+            value={result.metrics.avascularAreas}
+            alert={result.metrics.avascularAreas}
+          />
+          <MetricItem
+            label="Subpapillary VP"
+            value={result.metrics.subpapillaryVenousPlexus}
+            alert={result.metrics.subpapillaryVenousPlexus}
           />
         </div>
       </div>

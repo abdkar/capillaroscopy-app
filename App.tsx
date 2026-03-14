@@ -6,8 +6,9 @@ import {
   Hand,
   LesionGrade,
   Diagnosis,
+  AnalysisResult,
 } from './types';
-import { DEMO_IMAGES, generateAnalysisResult } from './constants';
+import { DEMO_IMAGES, generateAnalysisResult, recalculateFromCoords } from './constants';
 import { Button } from './Button';
 import { ImageViewer } from './ImageViewer';
 import { ResultsPanel } from './ResultsPanel';
@@ -178,6 +179,18 @@ export default function App() {
 
   const toggleDemoMode = () => {
     setState((s) => ({ ...s, isDemoMode: !s.isDemoMode }));
+  };
+
+  const handleUpdateResult = (updater: (prev: AnalysisResult) => AnalysisResult) => {
+    setState((prev) => {
+      if (!prev.analysisResult) return prev;
+      const edited = updater(prev.analysisResult);
+      // Recalculate all metrics, zone data, and explanations from coord arrays
+      return {
+        ...prev,
+        analysisResult: recalculateFromCoords(edited),
+      };
+    });
   };
 
   // --- Select Component ---
@@ -383,6 +396,7 @@ export default function App() {
           result={state.analysisResult}
           onZoneClick={(id) => setState((s) => ({ ...s, selectedZoneId: id }))}
           selectedZoneId={state.selectedZoneId}
+          onUpdateResult={handleUpdateResult}
         />
         <div className="mt-4 flex justify-between">
           <Button variant="outline" onClick={resetAnalysis}>
@@ -487,7 +501,38 @@ export default function App() {
                     val: r.metrics.crossedCapillaries,
                     ref: '0',
                   },
+                  {
+                    feat: 'Ramified / Branched',
+                    val: r.metrics.ramifiedCapillaries,
+                    ref: '0',
+                  },
+                  {
+                    feat: 'Dilated Capillaries',
+                    val: r.metrics.dilatedCapillaries,
+                    ref: '0',
+                  },
+                  {
+                    feat: 'Avascular Areas',
+                    val: r.metrics.avascularAreas ? 'Yes' : 'No',
+                    ref: 'No',
+                  },
+                  {
+                    feat: 'Tortuosity Index',
+                    val: r.metrics.tortuosityIndex,
+                    ref: '< 5',
+                  },
+                  {
+                    feat: 'Subpapillary VP',
+                    val: r.metrics.subpapillaryVenousPlexus ? 'Increased' : 'Normal',
+                    ref: 'Normal',
+                  },
+                  {
+                    feat: 'Scleroderma Pattern',
+                    val: r.sclerodermaPattern,
+                    ref: 'None',
+                  },
                 ].map((row) => (
+
                   <tr
                     key={row.feat}
                     className="hover:bg-slate-50 transition-colors"

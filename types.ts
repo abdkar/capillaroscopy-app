@@ -34,6 +34,14 @@ export enum LesionGrade {
   HighGrade = 'High-grade',
 }
 
+/** Scleroderma-spectrum capillaroscopy patterns */
+export enum SclerodermaPattern {
+  None = 'None',
+  Early = 'Early Pattern',
+  Active = 'Active Pattern',
+  Late = 'Late Pattern',
+}
+
 export interface PatientContext {
   id: string;
   age: string;
@@ -54,6 +62,12 @@ export interface AnalysisMetrics {
   giantCapillaries: number;
   crossedCapillaries: number;
   avascularAreas: boolean;
+  /** Ramified / branched capillaries */
+  ramifiedCapillaries: number;
+  /** Dilated capillaries */
+  dilatedCapillaries: number;
+  /** Increased sub-papillary venous plexus visibility */
+  subpapillaryVenousPlexus: boolean;
 }
 
 export interface ZoneData {
@@ -67,6 +81,8 @@ export interface ZoneData {
   hemorrhageCount: number;
   crossedCount: number;
   meanLoopWidth: number;
+  ramifiedCount: number;
+  dilatedCount: number;
 }
 
 export interface Point {
@@ -104,6 +120,12 @@ export interface AnalysisResult {
   segmentationPath: string;
   hemorrhageCoords: Point[];
   crossingCoords: Point[];
+  giantCoords: Point[];
+  ramifiedCoords: Point[];
+  avascularCoords: Point[];
+  dilatedCoords: Point[];
+  tortuosityCoords: Point[];
+  sclerodermaPattern: SclerodermaPattern;
   segmentationQuality: SegmentationQuality;
 }
 
