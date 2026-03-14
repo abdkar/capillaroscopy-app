@@ -1,6 +1,6 @@
 # CapillaroScope — AI-Assisted Capillaroscopy Dashboard
 
-![CapillaroScope Dashboard](./public/capillaroscopy-screenshot1.png)
+![CapillaroScope Dashboard](./public/capillaroscopy-screenshot2.png)
 
 **CapillaroScope** is a production-grade, premium clinical decision-support application built for **Nailfold Video Capillaroscopy (NVC)** analysis. It leverages an advanced, professional "Soft UI Evolution" and "Glassmorphism" design system (guided by the *ui-ux-pro-max* principles) to deliver an interface that meets the highest standards of modern healthcare and AI diagnostic platforms.
 
