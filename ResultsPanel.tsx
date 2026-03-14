@@ -74,7 +74,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
     alert?: boolean;
   }> = ({ label, value, unit, alert: isAlert }) => (
     <div>
-      <div className="text-[10px] text-slate-500 uppercase tracking-wider font-medium mb-0.5">
+      <div className="text-sm text-slate-500 uppercase tracking-wider font-medium mb-0.5">
         {label}
       </div>
       <div
@@ -91,22 +91,22 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
   );
 
   return (
-    <div className="h-full flex flex-col gap-3 overflow-y-auto pr-1 scrollbar-thin pb-4">
+    <div className="h-full flex flex-col gap-4 overflow-y-auto pr-1 scrollbar-thin pb-4">
       {/* Classification */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm shrink-0 animate-fade-in">
+      <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-slate-200 shadow-sm shrink-0 animate-fade-in hover:shadow-md transition-shadow duration-300">
         <div className="flex justify-between items-start mb-4">
           <h2 className="text-base font-bold text-slate-900 font-display">
             Lesion Grade
           </h2>
           <span
-            className={`px-2 py-0.5 rounded-md text-[10px] font-bold border uppercase tracking-wider ${confidenceStyles[result.confidence]}`}
+            className={`px-2 py-0.5 rounded-md text-sm font-bold border uppercase tracking-wider ${confidenceStyles[result.confidence]}`}
           >
             {result.confidence} Conf.
           </span>
         </div>
 
         <div className="mb-4">
-          <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium mb-1">
+          <p className="text-sm text-slate-400 uppercase tracking-wider font-medium mb-1">
             Prediction
           </p>
           <span
@@ -120,7 +120,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
           >
             {result.predictedGrade}
           </span>
-          <p className="text-[10px] text-slate-400 mt-1">
+          <p className="text-sm text-slate-400 mt-1">
             Aggregated from zone-level feature extraction
           </p>
         </div>
@@ -164,14 +164,14 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
       </div>
 
       {/* Explanation */}
-      <div className="bg-medical-50 p-4 rounded-xl border border-medical-100 shrink-0 animate-fade-in">
-        <h3 className="text-xs font-bold text-medical-900 mb-3 font-display">
+      <div className="bg-medical-50/80 backdrop-blur-md p-5 rounded-2xl border border-medical-100 shrink-0 animate-fade-in hover:shadow-md transition-shadow duration-300">
+        <h3 className="text-xs font-bold text-medical-900 mb-4 font-display uppercase tracking-wide">
           {selectedZoneId ? `${selectedZoneId} — Risk Factors` : 'Image-Level Explanation'}
         </h3>
 
         <div className="space-y-3">
           <div>
-            <span className="text-[9px] font-bold text-medical-700 uppercase tracking-wider">
+            <span className="text-xs font-bold text-medical-700 uppercase tracking-wider">
               Primary Drivers
             </span>
             <ul className="list-disc list-inside text-xs text-medical-900 mt-1 space-y-0.5">
@@ -184,7 +184,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
 
           <div>
-            <span className="text-[9px] font-bold text-medical-600 uppercase tracking-wider">
+            <span className="text-xs font-bold text-medical-600 uppercase tracking-wider">
               Secondary Findings
             </span>
             <ul className="list-disc list-inside text-xs text-medical-800 mt-1 space-y-0.5">
@@ -197,7 +197,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
 
           {result.confidence === 'Low' && (
-            <div className="flex items-center gap-2 text-[10px] text-orange-700 bg-orange-100 p-2 rounded-lg mt-2">
+            <div className="flex items-center gap-2 text-sm text-orange-700 bg-orange-100 p-2 rounded-lg mt-2">
               <AlertCircle size={12} />
               <span>Low confidence — manual review recommended</span>
             </div>
@@ -205,7 +205,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
         </div>
 
         {!selectedZoneId && (
-          <div className="mt-3 flex items-start gap-2 text-[10px] text-medical-600 bg-medical-100/50 p-2 rounded-lg">
+          <div className="mt-3 flex items-start gap-2 text-sm text-medical-600 bg-medical-100/50 p-2 rounded-lg">
             <Info size={12} className="mt-0.5 shrink-0" />
             <p>Click zones in the viewer to isolate per-region findings.</p>
           </div>
@@ -213,8 +213,8 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
       </div>
 
       {/* Metrics */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm animate-fade-in">
-        <h3 className="text-xs font-bold text-slate-900 mb-3 pb-2 border-b border-slate-100 font-display">
+      <div className="bg-white/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-sm animate-fade-in hover:shadow-md transition-shadow duration-300">
+        <h3 className="text-xs font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 font-display uppercase tracking-wide">
           {selectedZoneId ? `Metrics: ${selectedZoneId}` : 'Global Metrics'}
         </h3>
 
@@ -284,7 +284,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
       </div>
 
       {/* Trust footer */}
-      <div className="text-[10px] text-slate-400 text-center pt-1 flex items-center justify-center gap-3">
+      <div className="text-sm text-slate-400 text-center pt-1 flex items-center justify-center gap-3">
         <span>
           Calibration:{' '}
           <span className={result.isCalibrated ? 'text-emerald-500' : 'text-amber-500'}>

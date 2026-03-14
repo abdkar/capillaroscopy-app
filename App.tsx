@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppState,
   Device,
@@ -42,7 +42,7 @@ const StepIndicator: React.FC<{ currentStep: AppState['step'] }> = ({
   const currentIdx = steps.findIndex((s) => s.id === currentStep);
 
   return (
-    <div className="w-full bg-white border-b border-slate-200 py-3 px-6">
+    <div className="w-full bg-white/90 backdrop-blur-md border-b border-slate-200 py-3 px-6 shadow-sm z-20">
       <div className="max-w-7xl mx-auto flex items-center gap-2">
         {steps.map((step, idx) => {
           const isActive = step.id === currentStep;
@@ -111,6 +111,14 @@ export default function App() {
   });
 
   const [demoPanelOpen, setDemoPanelOpen] = useState(false);
+  const [fontSize, setFontSize] = useState<'sm' | 'md' | 'lg'>('md');
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (fontSize === 'sm') root.style.fontSize = '14px';
+    else if (fontSize === 'md') root.style.fontSize = '16px';
+    else root.style.fontSize = '18px';
+  }, [fontSize]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -180,7 +188,7 @@ export default function App() {
     onChange: (v: string) => void;
   }> = ({ label, value, options, onChange }) => (
     <div>
-      <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+      <label className="block text-base font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
         {label}
       </label>
       <select
@@ -202,7 +210,7 @@ export default function App() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full animate-fade-in">
       {/* Left: Inputs */}
       <div className="lg:col-span-5 flex flex-col gap-5">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-slate-200 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300">
           <h2 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2 font-display uppercase tracking-wide">
             <Camera size={16} className="text-medical-600" /> Case Image
           </h2>
@@ -245,7 +253,7 @@ export default function App() {
                 <span className="text-sm font-medium text-slate-700">
                   Click to upload
                 </span>
-                <span className="text-[10px] text-slate-400 mt-1">
+                <span className="text-sm text-slate-400 mt-1">
                   JPG or PNG — max 10 MB
                 </span>
               </label>
@@ -253,7 +261,7 @@ export default function App() {
           )}
 
           <div className="mt-5">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">
               Demo cases
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -268,7 +276,7 @@ export default function App() {
                     alt={img.label}
                     className="w-full h-14 object-cover rounded bg-slate-100 group-hover:scale-[1.02] transition-transform"
                   />
-                  <span className="block text-[10px] text-slate-500 mt-1 truncate font-medium">
+                  <span className="block text-sm text-slate-500 mt-1 truncate font-medium">
                     {img.label}
                   </span>
                 </button>
@@ -277,7 +285,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex-grow">
+        <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-slate-200 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 flex-grow">
           <h2 className="text-sm font-bold text-slate-900 mb-4 font-display uppercase tracking-wide">
             Metadata
           </h2>
@@ -327,9 +335,13 @@ export default function App() {
       </div>
 
       {/* Right: CTA */}
-      <div className="lg:col-span-7 flex flex-col justify-center items-center bg-gradient-to-br from-slate-50 to-medical-50/30 rounded-xl border border-slate-200 text-center p-12">
-        <div className="max-w-sm">
-          <div className="w-16 h-16 bg-medical-100 text-medical-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+      <div className="lg:col-span-7 flex flex-col justify-center items-center bg-gradient-to-br from-white/90 to-medical-50/50 backdrop-blur-md rounded-2xl border border-slate-200 text-center p-12 hover:shadow-xl hover:shadow-medical-100/30 transition-shadow duration-300 relative overflow-hidden">
+        {/* Soft UI background decor */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-medical-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+        
+        <div className="max-w-sm relative z-10">
+          <div className="w-16 h-16 bg-gradient-to-br from-medical-100 to-medical-50 text-medical-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-medical-100">
             <Sparkles size={28} />
           </div>
           <h3 className="text-xl font-bold text-slate-900 mb-2 font-display">
@@ -352,7 +364,7 @@ export default function App() {
           </Button>
 
           {state.isDemoMode && (
-            <div className="mt-4 bg-amber-50 text-amber-700 text-[11px] px-3 py-2 rounded-lg border border-amber-200">
+            <div className="mt-4 bg-amber-50 text-amber-700 text-base px-3 py-2 rounded-lg border border-amber-200">
               <strong>Demo Mode:</strong> Output values are simulated but
               deterministic per image.
             </div>
@@ -427,13 +439,13 @@ export default function App() {
             <table className="min-w-full divide-y divide-slate-200 text-sm">
               <thead>
                 <tr className="bg-slate-50/50">
-                  <th className="px-4 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-bold text-slate-400 uppercase tracking-wider">
                     Feature
                   </th>
-                  <th className="px-4 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-bold text-slate-400 uppercase tracking-wider">
                     Value
                   </th>
-                  <th className="px-4 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-sm font-bold text-slate-400 uppercase tracking-wider">
                     Reference
                   </th>
                 </tr>
@@ -516,7 +528,7 @@ export default function App() {
                     </span>
                     <div className="flex-1 min-w-0">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                        className={`inline-block px-2 py-0.5 rounded text-sm font-bold ${
                           z.riskContribution === 'High'
                             ? 'bg-red-100 text-red-800'
                             : z.riskContribution === 'Medium'
@@ -526,10 +538,10 @@ export default function App() {
                       >
                         {z.riskContribution}
                       </span>
-                      <p className="text-[11px] text-slate-500 mt-1">
+                      <p className="text-base text-slate-500 mt-1">
                         {z.notes}
                       </p>
-                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+                      <p className="text-sm text-slate-400 font-mono mt-0.5">
                         {z.capillaryCount} caps · {z.localDensity}/mm ·{' '}
                         {z.meanLoopWidth}µm
                       </p>
@@ -559,7 +571,7 @@ export default function App() {
               </ul>
               {r.explanation.secondaryFindings.length > 0 && (
                 <div className="pt-3 border-t border-slate-100">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">
                     Secondary Findings
                   </p>
                   <ul className="list-disc list-inside text-xs text-slate-600 space-y-1">
@@ -592,7 +604,7 @@ export default function App() {
         <div className="p-8 space-y-8">
           {/* Checklist */}
           <div>
-            <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">
               Verification
             </h3>
             <div className="space-y-2">
@@ -618,7 +630,7 @@ export default function App() {
 
           {/* Final Assessment */}
           <div>
-            <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">
               Final Assessment
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -684,10 +696,10 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-cyan-50/30 text-slate-900 font-sans relative overflow-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-gradient-to-br from-medical-600 to-medical-700 text-white p-2 rounded-lg shadow-sm">
               <Microscope size={20} />
@@ -696,13 +708,32 @@ export default function App() {
               <h1 className="text-sm font-bold text-slate-900 font-display tracking-tight">
                 CapillaroScope
               </h1>
-              <p className="text-[10px] text-slate-400 -mt-0.5 hidden sm:block">
+              <p className="text-sm text-slate-400 -mt-0.5 hidden sm:block">
                 AI-Assisted Capillaroscopy
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
+              {/* Font Size Toggle */}
+              <div className="hidden sm:flex bg-slate-100/80 backdrop-blur-sm p-1 rounded-lg shrink-0 border border-slate-200/50 items-center justify-center">
+                <button
+                  className={`px-2 py-1 rounded-md text-sm font-bold transition-all ${fontSize === 'sm' ? 'bg-white shadow-sm text-medical-600' : 'text-slate-500 hover:text-slate-700'}`}
+                  onClick={() => setFontSize('sm')}
+                  title="Small Text"
+                >A-</button>
+                <button
+                  className={`px-2 py-1 rounded-md text-base font-bold transition-all ${fontSize === 'md' ? 'bg-white shadow-sm text-medical-600' : 'text-slate-500 hover:text-slate-700'}`}
+                  onClick={() => setFontSize('md')}
+                  title="Medium Text"
+                >A</button>
+                <button
+                  className={`px-2 py-1 rounded-md text-lg font-bold transition-all ${fontSize === 'lg' ? 'bg-white shadow-sm text-medical-600' : 'text-slate-500 hover:text-slate-700'}`}
+                  onClick={() => setFontSize('lg')}
+                  title="Large Text"
+                >A+</button>
+              </div>
+
             {/* Demo Toggle */}
             <button
               className="flex items-center gap-1.5 select-none"
@@ -710,7 +741,7 @@ export default function App() {
               title="Toggle Demo Mode"
             >
               <span
-                className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                className={`text-sm font-bold uppercase tracking-wider transition-colors ${
                   state.isDemoMode ? 'text-medical-600' : 'text-slate-400'
                 }`}
               >
@@ -723,12 +754,12 @@ export default function App() {
               )}
             </button>
 
-            <div className="hidden md:flex items-center gap-1.5 text-[10px] text-slate-400">
+            <div className="hidden md:flex items-center gap-1.5 text-sm text-slate-400">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
               Online
             </div>
 
-            <div className="h-7 w-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-[10px]">
+            <div className="h-7 w-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-sm">
               DR
             </div>
           </div>
@@ -762,14 +793,14 @@ export default function App() {
             className="w-full bg-slate-800 p-2.5 flex justify-between items-center hover:bg-slate-750 transition-colors"
             onClick={() => setDemoPanelOpen(!demoPanelOpen)}
           >
-            <h4 className="font-bold text-[11px] tracking-wide">
+            <h4 className="font-bold text-base tracking-wide">
               📋 Demo Script
             </h4>
-            <span className="text-[10px] text-slate-400">
+            <span className="text-sm text-slate-400">
               {demoPanelOpen ? '▼' : '▲'}
             </span>
           </button>
-          <div className="p-3 text-[10px] space-y-2 max-h-48 overflow-y-auto scrollbar-thin leading-relaxed">
+          <div className="p-3 text-sm space-y-2 max-h-48 overflow-y-auto scrollbar-thin leading-relaxed">
             <p>
               <strong className="text-amber-400">1.</strong> Select a demo image
               or upload your own.

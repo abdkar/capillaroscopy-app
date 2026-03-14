@@ -8,23 +8,29 @@ export default {
     extend: {
       colors: {
         medical: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+          50: '#F8FAFC',  // slate-50
+          100: '#E0F2FE', // sky-100
+          200: '#BAE6FD', // sky-200
+          300: '#7DD3FC', // sky-300
+          400: '#38BDF8', // sky-400
+          500: '#0EA5E9', // sky-500
+          600: '#0891B2', // cyan-600 (Primary Brand)
+          700: '#0E7490', // cyan-700
+          800: '#155E75', // cyan-800
+          900: '#164E63', // cyan-900
+          950: '#083344', // cyan-950
         },
+        accent: {
+          50: '#ECFDF5',  // emerald-50
+          100: '#D1FAE5', // emerald-100
+          500: '#10B981', // emerald-500 (Positive/Accent)
+          600: '#059669', // emerald-600
+        }
       },
       fontFamily: {
-        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        display: ['"Inter"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-        display: ['"Outfit"', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.4s ease-out',

@@ -19,8 +19,10 @@ const ToggleChip: React.FC<{
 }> = ({ label, active, onClick, color = 'bg-slate-100 text-slate-700 border-slate-200' }) => (
   <button
     onClick={onClick}
-    className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-200 ${
-      active ? color : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100'
+    className={`px-3 py-1.5 rounded-xl text-base font-bold tracking-wide border transition-all duration-200 active:scale-95 ${
+      active
+        ? `${color} shadow-sm`
+        : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50 hover:text-slate-600 shadow-sm'
     }`}
     aria-pressed={active}
   >
@@ -104,8 +106,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   if (!result) {
     return (
-      <div className="w-full h-96 bg-slate-100 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-300">
-        <p className="text-slate-400 font-medium">No analysis data available</p>
+      <div className="w-full h-96 bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center border-2 border-dashed border-slate-300">
+        <p className="text-slate-400 font-medium tracking-wide">No analysis data available</p>
       </div>
     );
   }
@@ -254,7 +256,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             >
               {!isLeftPanel && (
                 <span
-                  className={`absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded ${
+                  className={`absolute top-2 left-2 text-sm font-bold px-2 py-0.5 rounded ${
                     isSelected
                       ? 'bg-medical-500 text-white'
                       : 'bg-black/60 text-white/90'
@@ -270,14 +272,14 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     ) : null;
 
   const ImagePanel = ({ isLeftPanel = false }: { isLeftPanel?: boolean }) => (
-    <div className="relative overflow-hidden w-full h-full">
+    <div className="relative overflow-hidden w-full h-full group">
       {/* Panel label */}
       <div
-        className={`absolute top-3 left-3 z-40 text-white text-[11px] px-2.5 py-1 rounded-md backdrop-blur-md border border-white/10 font-medium tracking-wide ${
-          isLeftPanel ? 'bg-black/60' : 'bg-medical-900/70'
+        className={`absolute top-4 left-4 z-40 text-white text-base px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/20 font-bold tracking-wide shadow-lg ${
+          isLeftPanel ? 'bg-black/40' : 'bg-medical-900/60'
         }`}
       >
-        {isLeftPanel ? 'Original' : 'Segmentation Output'}
+        {isLeftPanel ? 'Original Window' : 'Segmentation Output'}
       </div>
       <div className="w-full h-full" style={transformStyle}>
         <img
@@ -294,9 +296,9 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   );
 
   return (
-    <div className="flex flex-col gap-3 h-full">
+    <div className="flex flex-col gap-4 h-full">
       {/* Controls */}
-      <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-3 sticky top-0 z-40">
+      <div className="bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 sticky top-0 z-40 hover:shadow-md transition-shadow duration-300">
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
           {/* View mode switcher */}
           <div className="flex bg-slate-100 p-1 rounded-lg shrink-0">
@@ -325,7 +327,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           {/* Opacity sliders */}
           <div className="flex items-center gap-4 text-sm text-slate-600 flex-wrap justify-end">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+              <span className="text-sm font-bold uppercase text-slate-400 tracking-wider">
                 Mask
               </span>
               <input
@@ -336,14 +338,14 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                 onChange={(e) => setMaskOpacity(Number(e.target.value))}
                 className="w-20 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-medical-600"
               />
-              <span className="w-8 text-right font-mono text-[10px] text-slate-500">
+              <span className="w-8 text-right font-mono text-sm text-slate-500">
                 {maskOpacity}%
               </span>
             </div>
 
             {showHeatmap && (
               <div className="flex items-center gap-2 pl-3 border-l border-slate-200 animate-fade-in">
-                <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                <span className="text-sm font-bold uppercase text-slate-400 tracking-wider">
                   Heatmap
                 </span>
                 <input
@@ -354,7 +356,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                   onChange={(e) => setHeatmapOpacity(Number(e.target.value))}
                   className="w-20 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
-                <span className="w-8 text-right font-mono text-[10px] text-slate-500">
+                <span className="w-8 text-right font-mono text-sm text-slate-500">
                   {heatmapOpacity}%
                 </span>
               </div>
@@ -369,7 +371,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               >
                 <ZoomOut size={14} />
               </button>
-              <span className="font-mono text-[10px] w-10 text-center text-slate-500">
+              <span className="font-mono text-sm w-10 text-center text-slate-500">
                 {Math.round(scale * 100)}%
               </span>
               <button
@@ -445,7 +447,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       {/* Main viewer */}
       <div
         ref={containerRef}
-        className="flex-grow min-h-0 relative bg-slate-900 rounded-xl overflow-hidden border border-slate-700/50 select-none shadow-lg"
+        className="flex-grow min-h-0 relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-700/50 select-none shadow-xl shadow-slate-200/50"
         style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -459,7 +461,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           </div>
         ) : (
           <div className="w-full h-full relative">
-            <div className="absolute top-3 left-3 z-40 bg-slate-800/70 text-white text-[11px] px-2.5 py-1 rounded-md backdrop-blur-md border border-white/10 font-medium flex items-center gap-1.5 tracking-wide">
+            <div className="absolute top-3 left-3 z-40 bg-slate-800/70 text-white text-base px-2.5 py-1 rounded-md backdrop-blur-md border border-white/10 font-medium flex items-center gap-1.5 tracking-wide">
               <Layers size={11} /> Overlay
             </div>
             <div className="w-full h-full" style={transformStyle}>
@@ -479,12 +481,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Legend */}
         <div className="absolute bottom-3 right-3 flex flex-col items-end gap-2 z-50 pointer-events-none">
           {showHeatmap && (
-            <div className="bg-slate-900/90 text-white p-3 rounded-lg border border-slate-700 shadow-xl backdrop-blur-md pointer-events-auto text-[11px]">
-              <div className="font-bold mb-1.5 text-slate-400 uppercase tracking-wider text-[9px]">
+            <div className="bg-slate-900/90 text-white p-3 rounded-lg border border-slate-700 shadow-xl backdrop-blur-md pointer-events-auto text-base">
+              <div className="font-bold mb-1.5 text-slate-400 uppercase tracking-wider text-xs">
                 XAI Heatmap
               </div>
               <div className="w-40 h-2.5 rounded-full bg-gradient-to-r from-red-600 via-yellow-400 to-transparent mb-1" />
-              <div className="flex justify-between text-[9px] text-slate-500 uppercase font-bold tracking-wider">
+              <div className="flex justify-between text-xs text-slate-500 uppercase font-bold tracking-wider">
                 <span>High</span>
                 <span>Low</span>
               </div>
@@ -492,10 +494,10 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           )}
 
           <div className="bg-slate-900/90 text-white p-3 rounded-lg border border-slate-700 shadow-xl backdrop-blur-md pointer-events-auto">
-            <div className="font-bold mb-2 uppercase tracking-wider text-slate-400 text-[9px]">
+            <div className="font-bold mb-2 uppercase tracking-wider text-slate-400 text-xs">
               Legend
             </div>
-            <div className="space-y-1.5 text-[11px]">
+            <div className="space-y-1.5 text-base">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 bg-sky-400/30 border border-sky-500 rounded-sm" />
                 <span>Segmentation</span>
@@ -518,7 +520,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between px-1 text-[11px] text-slate-400">
+      <div className="flex items-center justify-between px-1 text-base text-slate-400">
         <div className="flex items-center gap-1.5">
           <Info size={12} />
           <span>

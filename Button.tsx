@@ -16,25 +16,25 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const base =
-    'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none';
+    'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-95';
 
   const variants: Record<string, string> = {
     primary:
-      'bg-medical-600 text-white hover:bg-medical-700 active:bg-medical-800 focus:ring-medical-500 shadow-sm hover:shadow-md',
+      'bg-medical-600 text-white hover:bg-medical-700 active:bg-medical-800 focus:ring-medical-500 shadow-lg shadow-medical-500/30',
     secondary:
       'bg-slate-100 text-slate-900 hover:bg-slate-200 active:bg-slate-300 focus:ring-slate-400',
     outline:
       'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 focus:ring-medical-500',
     danger:
-      'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus:ring-red-500 shadow-sm',
+      'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus:ring-red-500 shadow-md shadow-red-500/30',
     ghost:
       'bg-transparent text-slate-600 hover:bg-slate-100 active:bg-slate-200 focus:ring-slate-400',
   };
 
   const sizes: Record<string, string> = {
-    sm: 'px-3 py-1.5 text-xs gap-1.5',
-    md: 'px-4 py-2 text-sm gap-2',
-    lg: 'px-6 py-3 text-base gap-2',
+    sm: 'px-4 py-2 text-xs gap-1.5 rounded-lg',
+    md: 'px-5 py-2.5 text-sm gap-2 rounded-xl',
+    lg: 'px-8 py-3.5 text-base gap-2 rounded-xl',
   };
 
   return (
