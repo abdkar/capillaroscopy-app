@@ -1,9 +1,9 @@
 import { AnalysisResult, LesionGrade, ZoneData, Point } from './types';
 
 export const DEMO_IMAGES = [
-  { id: '1', url: 'https://picsum.photos/seed/nfc-healthy/800/600', label: 'Healthy Control' },
-  { id: '2', url: 'https://picsum.photos/seed/nfc-ssc/800/600', label: 'SSc Early Pattern' },
-  { id: '3', url: 'https://picsum.photos/seed/nfc-active/800/600', label: 'Active Pattern' },
+  { id: '1', url: '/cap1.jpg', label: 'Capillaroscopy 1' },
+  { id: '2', url: '/cap2.jpg', label: 'Capillaroscopy 2' },
+  { id: '3', url: '/cap3.jpg', label: 'Capillaroscopy 3' },
 ];
 
 /**
